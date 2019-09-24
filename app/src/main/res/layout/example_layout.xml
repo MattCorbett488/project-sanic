@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <!--
+    The android:id attribute lets us uniquely identify a view in a layout (and link it in code)
+    -->
+
+    <!--
+    The android:text attribute lets us set the text for that TextView
+    The android:textColor attribute is a hexadecimal value (values of 0-255 represented by 0-9 and A-F)
+    The android:textSize attribute is a dimension value (preferably in sp)
+    -->
+    <TextView
+            android:id="@+id/example_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Example Text"
+            android:textColor="#FF000000"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <!--
+    EditText's are subclasses of TextViews, so we have all the same available TextView attributes
+
+    The android:inputType attribute is list of constants thatallow you to specify the type of data
+    being entered (such as text or maybe just numbers)
+
+    The android:imeOptions attribute controls what your "action" button does. In this example,
+    actionSend would trigger a send
+
+    The android:hint attribute helps users know what that field should be used for when there's no
+    text.  You've probably seen something similar like where it says Address in the field where you
+    should enter your address.
+    -->
+    <EditText
+            android:id="@+id/example_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Example Hint"
+            android:imeOptions="actionSend"
+            android:inputType="text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/example_textview" />
+
+    <!--
+    TextInputLayout is basically a wrapper around an EditText/TextInputEditText
+    that adds a lot of styling and new features.
+
+    TextInputLayouts can also handle hints via the android:hint attribute and are enabled by setting
+    android:hintEnabled to true
+
+    We can enable error states to be shown with app:errorEnabled="true" and set the error in code
+
+    The app:counterEnabled attribute lets us add a character counter to the layout
+
+    The attribute app:passwordToggleEnabled gives us an icon that the user can click that will toggle
+    whether passwords are shown in plaintext or with dots. Similarly, passwordToggleTint sets the
+    color of whatever image we use as the password toggle image (default is the eye).  To get the
+    password appearance, we also have to set android:inputType="textPassword" on the inner EditText
+    -->
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/example_textinputlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Hint"
+            android:minWidth="120dp"
+            app:counterEnabled="true"
+            app:errorEnabled="true"
+            app:hintEnabled="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/example_edittext"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="#FF000000">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"
+                tools:text="Password" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <!--
+    Yet another subclass of TextView (so same attributes available)
+
+    You can use the android:onClick attribute to set a method name that gets called when the button
+    is clicked, but it's better practice to set an OnClickListener in code
+    -->
+    <Button
+            android:id="@+id/example_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="A Button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/example_textinputlayout" />
+
+    <!--
+    A RadioGroup is a LinearLayout specifically for RadioButtons.
+    We can specify a default checked button by setting android:checkedButton with an id
+
+    RadioButtons are just buttons that can be checked
+    The android:checked attribute controls whether the button is checked or not
+    -->
+    <RadioGroup
+            android:id="@+id/example_radiogroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:checkedButton="@+id/second_radiobutton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/example_button">
+
+        <RadioButton
+                android:id="@+id/first_radiobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="First Radio" />
+
+        <RadioButton
+                android:id="@+id/second_radiobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Second Radio" />
+
+        <RadioButton
+                android:id="@+id/third_radiobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Third Radio" />
+    </RadioGroup>
+
+    <!--
+    A switch is basically just an on/off button with only those two states (on/off)
+    Which state it's in is whether it's checked or not (via the android:checked attribute)
+    -->
+    <Switch
+            android:id="@+id/example_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Switch Text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/example_radiogroup" />
+
+    <!--
+    Checkboxes are very similar to switches, just checked/unchecked rather than on/off like a Switch
+    -->
+    <CheckBox
+            android:id="@+id/example_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Checkbox Text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/example_switch" />
+
+    <!--
+    ImageView holds some sort of image/picture.
+
+    The android:src attribute is how we set this image in XML, and takes a drawable (or color)
+
+    The android:scaletype attribute can let us change the way the image is set to fit in the ImageView.
+    -->
+    <ImageView
+            android:id="@+id/example_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sanic"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/example_checkbox" />
+</androidx.constraintlayout.widget.ConstraintLayout>

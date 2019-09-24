@@ -16,17 +16,14 @@
          We have to register our activity in the manifest
         We also need to specify it as the default launch activity
         -->
-        <activity android:name=".MainActivity">
+        <activity android:name=".LaunchActivity">
             <intent-filter>
-
-                <!-- This action specifies the activity as the main entry point -->
                 <action android:name="android.intent.action.MAIN" />
 
-                <!-- Specify this activity should appear in the launcher, and as the default -->
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".ExampleActivity" />
     </application>
 
 </manifest>

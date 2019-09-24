@@ -1,9 +1,14 @@
 <resources>
     <string name="app_name">project-sanic</string>
-    <string name="save_username">Save Username</string>
-    <string name="save_password">Save Password</string>
-    <string name="login_stuff">Login Stuff</string>
-    <string name="password_hint">Password</string>
-    <string name="username_hint">Username</string>
+    <string name="log_in_title">Log In Title</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="preferred_font_size">Preferred Font Size:</string>
+    <string name="small_font">Small Font</string>
+    <string name="medium_font">Medium Font</string>
+    <string name="large_font">Large Font</string>
+    <string name="save_username">Save Username?</string>
+    <string name="save_password">Save Password?</string>
+    <string name="share_location">Share location?</string>
     <string name="submit">Submit</string>
 </resources>
