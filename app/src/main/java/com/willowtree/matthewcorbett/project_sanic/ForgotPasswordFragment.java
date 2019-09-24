@@ -11,6 +11,10 @@ import androidx.fragment.app.Fragment;
 
 public class ForgotPasswordFragment extends Fragment {
 
+    public static ForgotPasswordFragment newInstance() {
+        return new ForgotPasswordFragment();
+    }
+    
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

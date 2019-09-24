@@ -32,6 +32,10 @@ public class LaunchFragment extends Fragment {
 
     private String preferredFontSize = "Small Font";
 
+    public static LaunchFragment newInstance() {
+        return new LaunchFragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
