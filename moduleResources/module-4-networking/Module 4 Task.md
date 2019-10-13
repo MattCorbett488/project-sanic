@@ -1,0 +1,9 @@
+- Add dependencies
+- Add API key to TimesApiService
+- Update fragment news layout
+- Create API calls in TimesApiService
+- Create OkHttp client
+- Create Retrofit
+- Create TimesApiService
+- Make API call
+- Use API response to populate layout fields
