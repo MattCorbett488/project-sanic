@@ -99,6 +99,20 @@ Lastly, our parameter, `String apiKey` is annotated with `@Query("api-key")`; th
 
 Together the whole thing says "this is a GET HTTP call that has an API key as a query parameter and will return data that looks like the data in SearchResponse".
 
+
+We'll add one more method to also handle other sections than the default `home`.  Let's add another method, `searchSection`, that looks like this:
+
+```java
+@GET("{section}.json")
+Call<SearchResponse> searchSection(@Query("api-key") String apiKey, @Path("section") String section);
+```
+
+This method is almost identical to the last one except for two things:
+- The text inside `@GET` is now `{section}` which acts as a placeholder for something called a `Path`
+- There's another parameter now, `String section`, that's annotated with `@Path("section)`
+
+Together, both the `{section}` and `@Path("section)` say that we should subtitute the value of `String section` in the URL path where `{section}` is.  As an example, if we passed `books` for the section, then it becomes `books.json` and that becomes the end of our URL.
+
 This should do for setting up our API, so let's look at creating our OkHttp and Retrofit instances.
 
 ## Creating OkHttp and Retrofit
