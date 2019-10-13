@@ -6,7 +6,6 @@
         android:layout_height="match_parent"
         tools:context=".SecondActivity">
 
-<<<<<<< HEAD
     <FrameLayout
             android:id="@+id/second_container"
             android:layout_width="0dp"
@@ -15,85 +14,4 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-=======
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/username_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Username Entered: "
-            app:layout_constraintBottom_toTopOf="@+id/password_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/username_label"
-            app:layout_constraintTop_toTopOf="@id/username_label" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/password_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Password Entered: "
-            app:layout_constraintBottom_toTopOf="@+id/font_size_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/username_label" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/password_label"
-            app:layout_constraintTop_toTopOf="@id/password_label" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/font_size_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Preferred Font Size: "
-            app:layout_constraintBottom_toTopOf="@+id/username_saved_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/password_label" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/font_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/font_size_label"
-            app:layout_constraintTop_toTopOf="@id/font_size_label" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/username_saved_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Username Saved: "
-            app:layout_constraintBottom_toTopOf="@+id/password_saved_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/font_size_label" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/username_saved"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/username_saved_label"
-            app:layout_constraintTop_toTopOf="@id/username_saved_label" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/password_saved_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Password Saved: "
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/username_saved_label" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/password_saved"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/password_saved_label"
-            app:layout_constraintTop_toTopOf="@id/password_saved_label" />
->>>>>>> eace2ad0c8e77a1c5941582ca182b08505e96d31
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,4 +11,8 @@
     <string name="save_password">Save Password?</string>
     <string name="share_location">Share location?</string>
     <string name="submit">Submit</string>
+
+    <string name="username_hint">Enter Username</string>
+    <string name="password_hint">Enter Password</string>
+    <string name="login_stuff">Login Stuff</string>
 </resources>
