@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.willowtree.matthewcorbett.project_sanic.newslist.NewsListFragment;
 
 public class LaunchActivity extends AppCompatActivity {
 
@@ -23,7 +24,7 @@ public class LaunchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_launch);
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, NewsFragment.newInstance())
+                .add(R.id.fragment_container, NewsListFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
     }
