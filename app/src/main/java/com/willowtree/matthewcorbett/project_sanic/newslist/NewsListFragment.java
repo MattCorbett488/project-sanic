@@ -45,8 +45,8 @@ public class NewsListFragment extends Fragment {
 
         newsList = view.findViewById(R.id.news_list);
 
+        //TODO: Set LayoutManager for newsList RecyclerView
         newsList.setLayoutManager(new LinearLayoutManager(requireContext()));
-
         //Create our HTTP client
         OkHttpClient client = new OkHttpClient.Builder()
                 //We're adding an interceptor that will add our API key to every call we make
@@ -80,7 +80,11 @@ public class NewsListFragment extends Fragment {
                 return;
             }
 
-            //TODO: Set data for RecyclerView Adapter (and set the Adapter to the RecyclerView)
+            //Create our adapter, passing in our search results
+            NewsListAdapter adapter = new NewsListAdapter(searchResponse.getResults());
+
+            //Set the adapter to our RecyclerView
+            newsList.setAdapter(adapter);
         }
 
         @Override
