@@ -17,6 +17,8 @@ import com.willowtree.matthewcorbett.project_sanic.R;
 import com.willowtree.matthewcorbett.project_sanic.api.ApiKeyInterceptor;
 import com.willowtree.matthewcorbett.project_sanic.api.TimesApiService;
 import com.willowtree.matthewcorbett.project_sanic.database.NewsStory;
+import com.willowtree.matthewcorbett.project_sanic.database.NewsStoryDao;
+import com.willowtree.matthewcorbett.project_sanic.database.NewsStoryDatabase;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -33,10 +35,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NewsListFragment extends Fragment {
 
-    Disposable fetchNewsDisposable;
+    private Disposable fetchNewsDisposable;
 
     private RecyclerView newsList;
-    private TimesApiService apiService;
     private NewsRepository newsRepository;
 
     public static NewsListFragment newInstance() {
@@ -71,12 +72,10 @@ public class NewsListFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        apiService = retrofit.create(TimesApiService.class);
+        TimesApiService apiService = retrofit.create(TimesApiService.class);
 
-        //TODO: Get our News DAO
-
-        //TODO: Add our DAO to NewsRepository
-        newsRepository = new NewsRepository(apiService);
+        NewsStoryDao dao = NewsStoryDatabase.getDatabase(getContext().getApplicationContext()).newsStoryDao;
+        newsRepository = new NewsRepository(apiService, dao);
 
         fetchNewsDisposable = fetchStories()
                 .subscribeOn(Schedulers.io())

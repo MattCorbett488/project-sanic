@@ -1,14 +1,22 @@
 package com.willowtree.matthewcorbett.project_sanic.database;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class NewsStory {
     private String section;
     private String subsection;
 
+    @PrimaryKey
     private String title = "";
 
+    @ColumnInfo(name = "article_abstract")
     private String articleAbstract;
 
     private String byline;
+    @ColumnInfo(name = "published_date")
     private String publishedDate;
 
     public String getSection() {

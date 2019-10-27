@@ -17,17 +17,22 @@ import retrofit2.Response;
 public class NewsRepository {
     private ApiMapper apiMapper;
     private TimesApiService newsApi;
-    //TODO: Add our News DAO as both a field and a parameter to the consturctor
+    private NewsStoryDao newsStoryDao;
 
-    public NewsRepository(TimesApiService newsApi) {
+    public NewsRepository(TimesApiService newsApi, NewsStoryDao newsStoryDao) {
         this.newsApi = newsApi;
+        this.newsStoryDao = newsStoryDao;
         apiMapper = new ApiMapper();
     }
 
     @Nullable
     @WorkerThread
     public List<NewsStory> fetchNewsStories() {
-        //TODO: Check DAO for news stories before calling the network
+        List<NewsStory> stories = newsStoryDao.getAllStories();
+
+        if (stories != null) {
+            return stories;
+        }
 
         try {
             Response<SearchResponse> response = newsApi.search(TimesApiService.API_KEY).execute();
