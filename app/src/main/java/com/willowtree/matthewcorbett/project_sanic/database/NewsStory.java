@@ -1,5 +1,6 @@
 package com.willowtree.matthewcorbett.project_sanic.database;
 
+//TODO: Turn this class into a database Entity
 public class NewsStory {
     private String section;
     private String subsection;
