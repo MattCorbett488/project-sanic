@@ -7,8 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.willowtree.matthewcorbett.project_sanic.R;
-import com.willowtree.matthewcorbett.project_sanic.api.model.SearchResponse;
-import com.willowtree.matthewcorbett.project_sanic.api.model.SearchResult;
+import com.willowtree.matthewcorbett.project_sanic.database.NewsStory;
 
 public class NewsListViewHolder extends RecyclerView.ViewHolder {
 
@@ -27,11 +26,11 @@ public class NewsListViewHolder extends RecyclerView.ViewHolder {
         articleAbstract = itemView.findViewById(R.id.article_abstract);
     }
 
-    public void bind(SearchResult searchResult) {
-        title.setText(searchResult.getTitle());
-        author.setText(searchResult.getByline());
-        section.setText(searchResult.getSection());
-        subsection.setText(searchResult.getSubsection());
-        articleAbstract.setText(searchResult.getArticleAbstract());
+    public void bind(NewsStory newsStory) {
+        title.setText(newsStory.getTitle());
+        author.setText(newsStory.getByline());
+        section.setText(newsStory.getSection());
+        subsection.setText(newsStory.getSubsection());
+        articleAbstract.setText(newsStory.getArticleAbstract());
     }
 }

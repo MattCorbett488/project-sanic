@@ -8,16 +8,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.willowtree.matthewcorbett.project_sanic.R;
-import com.willowtree.matthewcorbett.project_sanic.api.model.SearchResult;
+import com.willowtree.matthewcorbett.project_sanic.database.NewsStory;
 
 import java.util.List;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListViewHolder> {
 
-    private List<SearchResult> searchResults;
+    private List<NewsStory> newsStories;
 
-    public NewsListAdapter(List<SearchResult> searchResults) {
-        this.searchResults = searchResults;
+    public NewsListAdapter(List<NewsStory> newsStories) {
+        this.newsStories = newsStories;
     }
 
     @NonNull
@@ -32,15 +32,14 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull NewsListViewHolder holder, int position) {
-        SearchResult searchResult = searchResults.get(position);
-        holder.bind(searchResult);
-        OnLongCl
+        NewsStory newsStory = newsStories.get(position);
+        holder.bind(newsStory);
     }
 
     @Override
     public int getItemCount() {
-        if (searchResults != null) {
-            return searchResults.size();
+        if (newsStories != null) {
+            return newsStories.size();
         } else {
             return 0;
         }
