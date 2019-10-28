@@ -121,25 +121,274 @@ Each of these corresponds to a large part of our database (all these are as defi
 
 ### Room - Database
 
-Main entry point for your app’s persisted data
-Gives you access to your DAOs for data fetching/updating
+A database in Room is the main entry point for your app’s persisted data - it's the highest-level object we work with.
+
+Generally this is where your DAO will be fetched from, usually with some sort of call like 
+
+```java
+public abstract ExampleDao getExampleDao();
+```
+
+Databases in Room have four conditions that should be met:
+- The class should be declared abstract and extend `RoomDatabase`
+- The class is annotated with the `@Database` annotation
+- Includes a list of Entities in the `@Database` annotation
+- Contains abstract methods (0 arguments) for each DAO class annotated with `@Dao`
+
+A simple Database would look like this:
+
+```java
+@Database(entities = {NewsStory.class}, version = 1)
+public abstract class AppDatabase extends RoomDatabase {
+    public abstract NewsDao newsDao();
+}
+```
+
+Our `AppDatabase` here will have `NewsStory` entities (so entries in its table) and gives us access to the `NewsDao` via the one defined abstract method.
+
+To get an instance of our database, we'd do the following:
+
+```java
+AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+        AppDatabase.class, "database-name").build();
+```
+
+We have to call `Room.databaseBuilder()` and pass it a Context (`getApplicationContext()` here), the Database class (`AppDatabase.class`), and a name for the database (`"database-name"`).  We can define this as a singleton (only one object so we can never instantiate more than one) by defining a static method in our Database class.
+
+If we add that method, our Database class would look like this:
+
+```java
+@Database(entities = {NewsStory.class}, version = 1)
+public abstract class AppDatabase extends RoomDatabase {
+    private static AppDatabase INSTANCE;
+
+    public abstract NewsDao newsDao();
+
+    public static AppDatabase getAppDatabase(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = Room.databaseBuilder(getApplicationContext(),
+        AppDatabase.class, "database-name").build();
+        }
+        return INSTANCE;
+    }
+}
+```
+
+Then, elsewhere, we could grab our DAO from this database with:
+```java
+AppDatabase.getAppDatabase(getApplicationContext()).newsDao()
+```
 
 ### Room - Data Access Object (DAO)
 
-You write these as a way of interacting with the data you want in the database
-Actions are interpreted using annotations (@Insert, @Query)
-Methods can have a return type if you’re getting information
-Query-annotated methods have a String parameter inside for writing the corresponding SQL query
-Can also pass arguments to these methods for restrictions (like passing a minimum age for an employee range)
+The DAO is basically how we perform our SQL queries. We write these queries as a way of interacting with the data you want in the database
+
+The DAO **must** be an interface or an abstract class and annotated with the `@Dao` annotation
+
+We can create our queries just by writing function signatures and annotating them with the appropriate action.  Valid actions are:
+- `@Insert`: inserts an item (or items) into the database
+- `@Delete`: deletes an item from the database (this is only used for **ONE** item - to delete multiple items you need to use `@Query`)
+- `@Update`: update an item in the row (this update will be based on the primary key of the item)
+- `@Query`: perform a query that can be used for any of the above actions (also for retrieving data)
+
+A sample DAO for our News app might look like this:
+
+```java
+@Dao
+public interface NewsStoryDao {
+
+    @Query("SELECT * FROM news_stories")
+    List<NewsStory> getAllStories();
+
+    @Query("SELECT * FROM news_stories WHERE title LIKE :title LIMIT 1")
+    NewsStory findStoryByTitle(String title);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertAllStories(List<NewsStory> stories);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertStory(NewsStory story);
+
+    @Delete
+    void deleteStory(NewsStory story);
+
+    @Query("DELETE FROM news_stories")
+    void deleteAll();
+}
+```
+
+Our `insertAllStories` and `insertStory` methods will insert all the stories in the list (in the case of `insertAllStories`) and a single NewsStory. The `onConflict = OnConflictStrategy.IGNORE` there just means that Room won't take any action if Room determines that the story already exists in the database.
+
+`deleteStory()` will delete a single story, and `deleteAll()` will delete ALL our stories.
+
+Our first two methods include some text inside the `@Query` annotation - these are our *queries*.  The first one just selects everything from a table called `news_stories` while the second will match the `title` to the title we pass in (the `WHERE title LIKE :title` bit) and make sure that we only return one story (the `LIMIT 1` bit).
+
+Notice that our `@Delete` and `@Insert` methods are all `void` return types - we don't need anything back from them.  Our `getAllStories()` and `findStoryByTitle()` methods return one or more NewsStory objects because we're querying to find them.  Whenever we expect to get something back, we specify it as a return type like any normal method.
+
+You might've also noticed us passing `String title` to our `findStoryByTitle()` method - this is how we can add variables to our queries.  The `:title` part of our `findStoryByTitle()` query looks for an argument to the method called `title` and uses that in place of `:title`.
 
 ### Room - Entity
 
-These are essentially entries into your table (e.x. An Employee in an Employees table)
-Usually has a primary key (unique identifier or identifiers of an entry) annotated with @PrimaryKey
-You can call DAO methods from your code to perform operations on the underlying database (e.x. Getting your employees from the table, or deleting old entries from a database)
+Entities are essentially entries into your table (e.x. An Employee in an Employees table)
+
+These aren't very different from our normal data models.  Like let's look at a normal NewsStory:
+
+```java
+public class NewsStory {
+    private String section;
+    private String subsection;
+
+    private String title = "";
+
+    private String articleAbstract;
+
+    private String byline;
+    private String publishedDate;
+}
+```
+
+To turn this into an Entity, we first need to annotate with `@Entity`:
+
+```java
+@Entity
+public class NewsStory {
+    private String section;
+    private String subsection;
+
+    private String title = "";
+
+    private String articleAbstract;
+
+    private String byline;
+    private String publishedDate;
+}
+```
+
+We also need to make sure it has a **Primary Key**. The primary key is the way to uniquely identify an entry in the row - normally this is something like a `userId` or just an `id` (some numeric value uniquely assigned).  Since we don't really have that here, let's say that each story has to have a unique title, so we'll annotate `title` with `@PrimaryKey` (this is also why title is initialized - primary keys cannot be null):
+
+```java
+@Entity
+public class NewsStory {
+    private String section;
+    private String subsection;
+
+    @PrimaryKey
+    private String title = "";
+
+    private String articleAbstract;
+
+    private String byline;
+    private String publishedDate;
+}
+```
+
+Lastly, if we want some of our column names to be different from their variable names, we can use an annotation called `@ColumnInfo` to specify the new column name. If we change `articleAbstract` to `article_abstract` and `publishedDate` to `published_date`, our Entity looks like this:
+
+```java
+@Entity
+public class NewsStory {
+    private String section;
+    private String subsection;
+
+    @PrimaryKey
+    private String title = "";
+
+    @ColumnInfo(name = "article_abstract")
+    private String articleAbstract;
+
+    private String byline;
+
+    @ColumnInfo(name = "published_date")
+    private String publishedDate;
+}
+```
 
 ### Putting it all together
 
-Build your database
-Getting the appropriate DAO from the database
-Getting data from the database
+Stringing these all together, we have the following:
+
+- the database
+```java
+@Database(entities = {NewsStory.class}, version = 1)
+public abstract class AppDatabase extends RoomDatabase {
+    private static AppDatabase INSTANCE;
+
+    public abstract NewsDao newsDao();
+
+    public static AppDatabase getAppDatabase(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = Room.databaseBuilder(getApplicationContext(),
+        AppDatabase.class, "database-name").build();
+        }
+        return INSTANCE;
+    }
+}
+```
+
+- the DAO
+```java
+@Dao
+public interface NewsStoryDao {
+
+    @Query("SELECT * FROM news_stories")
+    List<NewsStory> getAllStories();
+
+    @Query("SELECT * FROM news_stories WHERE title LIKE :title LIMIT 1")
+    NewsStory findStoryByTitle(String title);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertAllStories(List<NewsStory> stories);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertStory(NewsStory story);
+
+    @Delete
+    void deleteStory(NewsStory story);
+
+    @Query("DELETE FROM news_stories")
+    void deleteAll();
+}
+```
+
+- and the Entity
+```java
+@Entity
+public class NewsStory {
+    private String section;
+    private String subsection;
+
+    @PrimaryKey
+    private String title = "";
+
+    @ColumnInfo(name = "article_abstract")
+    private String articleAbstract;
+
+    private String byline;
+
+    @ColumnInfo(name = "published_date")
+    private String publishedDate;
+}
+```
+
+
+So somewhere in our code, we could access the database and pass the DAO into some helper object that will get our info for us:
+
+```java
+//Get our database
+AppDatabase database = AppDatabase.getAppDatabase(getContext().getApplicationContext());
+//Get our DAO
+NewsDao newsDao = database.newsDao();
+
+//Pass our DAO into our helper
+ExampleRepository repository = new ExampleRepository(newsDao);
+```
+
+and inside that `ExampleRepository`, we might have a `getStories()` method:
+
+```java
+public List<NewsStory> getStories() {
+    return newsDao.getAllStories();
+}
+```
+
+This example's a very simple way in which we could set up our data, our DAO, and our database.
